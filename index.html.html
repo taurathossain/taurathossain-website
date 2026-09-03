@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Taurat Hossain | NYC Photographer</title>
+<meta name="description" content="Taurat Hossain (he/him) is a New York–based photographer working across fashion, editorial, and documentary. Work appearing in The New York Times, The Washington Post, Bloomberg, and Cosmopolitan.">
+<meta name="author" content="Taurat Hossain">
+<link rel="canonical" href="https://taurathossain.com/">
+<meta property="og:title" content="Taurat Hossain | NYC Photographer">
+<meta property="og:description" content="Fashion, editorial and documentary photography based in New York City.">
+<meta property="og:image" content="https://taurathossain.com/og-image.jpg">
+<meta property="og:url" content="https://taurathossain.com">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Taurat Hossain | NYC Photographer">
+<meta name="twitter:image" content="https://taurathossain.com/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+/* ─── TOKENS ──────────────────────────────────────────── */
+:root {
+  --black:   #1a1a1a;
+  --white:   #ffffff;
+  --bg:      #ffffff;
+  --dim:     #888888;
+  --line:    rgba(0,0,0,.1);
+  --serif:   'Playfair Display', Georgia, serif;
+  --sans:    'Inter', system-ui, sans-serif;
+  --nav-h:   50px;
+  --ease:    cubic-bezier(.4,0,.2,1);
+}
+
+/* ─── RESET ───────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--black);
+  font-family: var(--sans);
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; width: 100%; }
+button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+
+/* ─── INTRO ───────────────────────────────────────────── */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .9s var(--ease), visibility .9s var(--ease);
+}
+#intro.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* The video element — swap src="intro.mp4" when ready */
+#intro video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .82;
+}
+
+/* Placeholder shown when no video file is present */
+.intro-placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #1c1c1c 0%, #111111 100%);
+}
+
+.intro-id {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.intro-name {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  letter-spacing: .02em;
+  color: var(--white);
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: rise .9s var(--ease) .2s forwards;
+}
+
+.intro-role {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: .65rem;
+  letter-spacing: .22em;
+  color: var(--dim);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: rise .7s var(--ease) .7s forwards;
+}
+
+/* Bottom HUD */
+.intro-hud {
+  position: absolute;
+  bottom: 32px;
+  left: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  animation: rise .5s var(--ease) 1.1s forwards;
+}
+
+.intro-bar {
+  width: 80px;
+  height: 1px;
+  background: rgba(247,245,242,.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-bar-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--dim);
+  width: 100%;
+  transform-origin: left;
+  animation: drain 15s linear .2s forwards;
+}
+
+.intro-count {
+  font-size: .6rem;
+  letter-spacing: .15em;
+  color: var(--dim);
+  min-width: 20px;
+}
+
+.intro-skip {
+  font-size: .6rem;
+  letter-spacing: .18em;
+  color: var(--dim);
+  transition: color .2s;
+}
+.intro-skip:hover { color: var(--white); }
+
+@keyframes rise {
+  to { opacity: 1; transform: none; }
+}
+@keyframes drain {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* ─── SITE SHELL ──────────────────────────────────────── */
+#site {
+  opacity: 0;
+  transition: opacity .7s var(--ease);
+}
+#site.show { opacity: 1; }
+
+/* ─── NAV ─────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+
+.nav-logo {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: .01em;
+  color: var(--black);
+  transition: color .2s;
+}
+.nav-logo:hover { color: var(--dim); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: .62rem;
+  letter-spacing: .14em;
+  color: var(--dim);
+  transition: color .2s;
+  position: relative;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--black); }
+
+/* Dropdown */
+.nav-drop { position: relative; }
+
+.nav-drop > a::after {
+  content: '';
+  display: inline-block;
+  width: 4px; height: 4px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  margin-left: 6px;
+  vertical-align: middle;
+  opacity: .5;
+  transition: transform .2s;
+}
+.nav-drop:hover > a::after { transform: rotate(-135deg) translateY(0); }
+
+.drop-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 1px);
+  left: -16px;
+  background: rgba(255,255,255,.98);
+  border: 1px solid var(--line);
+  border-top: none;
+  padding: 10px 0;
+  min-width: 260px;
+  z-index: 300;
+  box-shadow: 0 8px 24px rgba(0,0,0,.07);
+}
+.nav-drop:hover .drop-panel { display: block; }
+
+.drop-panel a {
+  display: block;
+  padding: 8px 20px;
+  font-size: .6rem;
+  letter-spacing: .12em;
+  color: var(--dim);
+  transition: color .15s, padding-left .15s;
+}
+.drop-panel a:hover { color: var(--black); padding-left: 26px; }
+
+/* Hamburger */
+.nav-ham {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.nav-ham span {
+  display: block;
+  width: 20px; height: 1px;
+  background: rgba(26,26,26,.6);
+  transition: .25s;
+}
+
+/* ─── MOBILE NAV ──────────────────────────────────────── */
+#mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 195;
+  background: rgba(255,255,255,.99);
+  flex-direction: column;
+  padding: 80px 32px 40px;
+  overflow-y: auto;
+}
+#mobile-nav.open { display: flex; }
+
+.mn-row {
+  border-bottom: 1px solid var(--line);
+}
+.mn-row > a {
+  display: block;
+  padding: 16px 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: rgba(26,26,26,.7);
+  transition: color .2s;
+}
+.mn-row > a:hover { color: var(--black); }
+.mn-sub { padding: 0 0 12px 12px; }
+.mn-sub a {
+  display: block;
+  padding: 7px 0;
+  font-size: .62rem;
+  letter-spacing: .12em;
+  color: var(--dim);
+  transition: color .2s;
+}
+.mn-sub a:hover { color: var(--black); }
+.mn-close {
+  position: absolute;
+  top: 20px; right: 28px;
+  font-size: 1.1rem;
+  color: var(--dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ─── PAGES ───────────────────────────────────────────── */
+.page { display: none; min-height: 100vh; padding-top: var(--nav-h); }
+.page.active { display: block; }
+
+/* ─── OVERVIEW GRID ───────────────────────────────────── */
+.grid {
+  columns: 3;
+  column-gap: 2px;
+  padding: 2px;
+  margin-top: 2px;
+}
+@media (max-width: 960px) { .grid { columns: 2; } }
+@media (max-width: 540px) { .grid { columns: 1; } }
+
+.gi {
+  break-inside: avoid;
+  margin-bottom: 2px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: #e8e8e8;
+}
+
+.gi img {
+  width: 100%;
+  display: block;
+  transition: transform .6s var(--ease), filter .4s;
+  filter: brightness(.92);
+}
+.gi:hover img {
+  transform: scale(1.03);
+  filter: brightness(1);
+}
+
+/* Caption on hover */
+.gi-cap {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(14,13,11,.75) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity .3s;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+.gi:hover .gi-cap { opacity: 1; }
+.gi-cap-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+/* ─── PROJECT PANEL ───────────────────────────────────── */
+#panel {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform .5s var(--ease);
+  overflow-y: auto;
+}
+#panel.open { transform: none; }
+
+.panel-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: var(--nav-h);
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+
+.panel-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: .01em;
+  color: var(--black);
+}
+
+.panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.panel-close {
+  font-size: .62rem;
+  letter-spacing: .14em;
+  color: var(--dim);
+  transition: color .2s;
+}
+.panel-close:hover { color: var(--white); }
+
+.panel-prev, .panel-next {
+  font-size: .62rem;
+  letter-spacing: .1em;
+  color: var(--dim);
+  transition: color .2s;
+}
+.panel-prev:hover, .panel-next:hover { color: var(--white); }
+
+/* Gallery inside panel */
+.panel-gallery {
+  columns: 2;
+  column-gap: 2px;
+  padding: 2px;
+}
+@media (max-width: 700px) { .panel-gallery { columns: 1; } }
+
+.panel-photo {
+  break-inside: avoid;
+  margin-bottom: 2px;
+  background: #f0f0f0;
+}
+.panel-photo img {
+  width: 100%;
+  display: block;
+}
+
+/* Credits block below gallery */
+.panel-credits {
+  padding: 48px 32px 80px;
+  border-top: 1px solid var(--line);
+  margin-top: 2px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 48px;
+  max-width: 800px;
+}
+@media (max-width: 600px) {
+  .panel-credits { grid-template-columns: 1fr; gap: 20px; }
+}
+
+.credit-block {}
+.credit-label {
+  font-size: .55rem;
+  letter-spacing: .2em;
+  color: var(--dim);
+  margin-bottom: 5px;
+}
+.credit-value {
+  font-size: .78rem;
+  line-height: 1.7;
+  color: var(--black);
+}
+
+.panel-desc {
+  padding: 0 32px 0;
+  margin-bottom: 32px;
+  max-width: 560px;
+}
+.panel-desc p {
+  font-size: .8rem;
+  line-height: 1.8;
+  color: rgba(26,26,26,.65);
+}
+
+/* ─── MOTION PAGE ─────────────────────────────────────── */
+/*
+  9:16 grid for short clips.
+  Each item is a placeholder — swap in <video> tags or Vimeo embeds.
+*/
+.motion-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 2px;
+  margin-top: 2px;
+}
+@media (max-width: 900px) { .motion-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .motion-grid { grid-template-columns: 1fr 1fr; } }
+
+.motion-item {
+  aspect-ratio: 9/16;
+  background: #1a1a1a;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Replace this div with <video src="clip.mp4" muted loop playsinline> */
+.motion-thumb {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.motion-play {
+  width: 44px; height: 44px;
+  border: 1px solid rgba(247,245,242,.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .2s, transform .2s;
+}
+.motion-item:hover .motion-play {
+  border-color: rgba(247,245,242,.6);
+  transform: scale(1.08);
+}
+
+.motion-label {
+  font-size: .55rem;
+  letter-spacing: .2em;
+  color: var(--dim);
+}
+
+.motion-dur {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: .55rem;
+  letter-spacing: .1em;
+  color: rgba(247,245,242,.25);
+}
+
+/* ─── STORIES / LONG-FORM ─────────────────────────────── */
+.stories-list {
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+@media (max-width: 700px) { .stories-list { grid-template-columns: 1fr; } }
+
+.story-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: #1a1714;
+  aspect-ratio: 4/3;
+}
+.story-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .6s var(--ease);
+}
+.story-item:hover img { transform: scale(1.03); }
+
+.story-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(14,13,11,.82) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  gap: 6px;
+}
+
+.story-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.story-meta {
+  font-size: .58rem;
+  letter-spacing: .16em;
+  color: var(--dim);
+}
+
+/* ─── DOCUMENTARY ─────────────────────────────────────── */
+/* Same masonry grid as overview but full-width items */
+.doc-grid {
+  columns: 2;
+  column-gap: 2px;
+  padding: 2px;
+  margin-top: 2px;
+}
+@media (max-width: 700px) { .doc-grid { columns: 1; } }
+
+/* ─── BIO PAGE ────────────────────────────────────────── */
+.bio-wrap {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 64px;
+  padding: 48px 32px;
+  max-width: 900px;
+}
+@media (max-width: 700px) {
+  .bio-wrap { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.bio-photo {
+  aspect-ratio: 3/4;
+  background: #1a1714;
+  overflow: hidden;
+}
+.bio-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.bio-copy h1 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  margin-bottom: 24px;
+  line-height: 1.1;
+  color: var(--black);
+}
+
+.bio-copy p {
+  font-size: .82rem;
+  line-height: 1.9;
+  color: rgba(26,26,26,.72);
+  margin-bottom: 16px;
+  max-width: 52ch;
+}
+
+.bio-copy p em {
+  font-style: italic;
+  color: var(--black);
+}
+
+.bio-copy p strong {
+  font-weight: 500;
+  color: var(--black);
+}
+
+.bio-copy .bio-awards {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.bio-awards p {
+  font-size: .75rem;
+  color: rgba(26,26,26,.6);
+  margin-bottom: 8px;
+}
+
+.bio-contact {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bio-contact a {
+  font-size: .72rem;
+  letter-spacing: .1em;
+  color: var(--dim);
+  transition: color .2s;
+}
+.bio-contact a:hover { color: var(--white); }
+
+/* ─── CONTACT PAGE ────────────────────────────────────── */
+.contact-wrap {
+  max-width: 440px;
+  padding: 56px 32px 80px;
+}
+
+.contact-wrap h1 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1;
+  margin-bottom: 32px;
+  color: var(--black);
+}
+
+.contact-wrap p {
+  font-size: .8rem;
+  line-height: 1.85;
+  color: rgba(26,26,26,.6);
+  margin-bottom: 32px;
+  max-width: 42ch;
+}
+
+.contact-direct {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+.contact-direct a {
+  font-size: .78rem;
+  letter-spacing: .08em;
+  color: var(--black);
+  transition: color .2s;
+}
+.contact-direct a:hover { color: var(--dim); }
+
+.c-divider {
+  width: 32px;
+  height: 1px;
+  background: var(--line);
+  margin-bottom: 40px;
+}
+
+/* Form */
+.cf {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+.cf label {
+  font-size: .55rem;
+  letter-spacing: .2em;
+  color: var(--dim);
+}
+.cf input, .cf textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  padding: 10px 0;
+  font-family: var(--sans);
+  font-size: .8rem;
+  font-weight: 300;
+  color: var(--black);
+  outline: none;
+  transition: border-color .2s;
+  resize: none;
+}
+.cf input:focus, .cf textarea:focus {
+  border-color: var(--black);
+}
+.cf textarea { min-height: 80px; }
+
+.c-submit {
+  margin-top: 8px;
+  padding: 12px 28px;
+  border: 1px solid rgba(0,0,0,.2);
+  background: transparent;
+  font-family: var(--sans);
+  font-size: .6rem;
+  font-weight: 300;
+  letter-spacing: .2em;
+  color: var(--dim);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.c-submit:hover {
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.c-sent {
+  display: none;
+  margin-top: 14px;
+  font-size: .7rem;
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+
+/* ─── FOOTER ──────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 80px;
+  background: var(--bg);
+}
+footer span {
+  font-size: .55rem;
+  letter-spacing: .18em;
+  color: var(--dim);
+}
+
+/* ─── RESPONSIVE NAV ──────────────────────────────────── */
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .nav-ham   { display: flex; }
+}
+
+/* ─── REDUCED MOTION ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     INTRO
+     ─────────────────────────────────────────────────────
+     HOW TO USE YOUR OWN VIDEO:
+
+     SINGLE VIDEO:
+     Replace the <div class="intro-placeholder"> with:
+     <video autoplay muted playsinline id="intro-vid-0"
+            src="intro.mp4"
+            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85;">
+     </video>
+     Then in the INTRO_CLIPS array below, set:
+       const INTRO_CLIPS = ['intro.mp4'];
+
+     CINEMATIC SEQUENCE (2–4 clips back to back):
+     Set INTRO_CLIPS to your clip filenames in order:
+       const INTRO_CLIPS = ['clip1.mp4', 'clip2.mp4', 'clip3.mp4'];
+     Each clip plays fully before the next begins.
+     The whole sequence auto-advances into the site when done,
+     or the visitor can skip at any time.
+
+     DROP your video files in the same folder as index.html.
+     Recommended: short clips, 3–8 seconds each, muted.
+══════════════════════════════════════════════════════ -->
+<div id="intro">
+
+  <!-- Video container — clips are injected here by JS -->
+  <div id="intro-video-container">
+    <!-- Placeholder shown until your video file is present -->
+    <div class="intro-placeholder"></div>
+  </div>
+
+  <div class="intro-id">
+    <div class="intro-name">Taurat Hossain</div>
+    <div class="intro-role">Photographer &middot; New York City</div>
+  </div>
+
+  <div class="intro-hud">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="intro-count" id="intro-count">15</span>
+      <div class="intro-bar"><div class="intro-bar-fill"></div></div>
+    </div>
+    <button class="intro-skip" onclick="skipIntro()">skip</button>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SITE
+══════════════════════════════════════════════════════ -->
+<div id="site">
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" onclick="goPage('overview');return false">Taurat Hossain</a>
+
+  <ul class="nav-links">
+    <li><a href="#" onclick="goPage('overview');return false">overview</a></li>
+
+    <li class="nav-drop">
+      <a href="#">fashion &amp; culture</a>
+      <div class="drop-panel">
+        <a href="#" onclick="openProject('cosmopolitan-me');return false">Cosmopolitan Middle East</a>
+        <a href="#" onclick="openProject('gloria-steinem');return false">Gloria Steinem for Cosmopolitan</a>
+        <a href="#" onclick="openProject('connie-chung');return false">Connie Chung &amp; Maury Povich — The Washington Post</a>
+        <a href="#" onclick="openProject('lara-trump');return false">Lara Trump for The Washington Post</a>
+        <a href="#" onclick="openProject('leblanc');return false">LeBlanc Studios FW26</a>
+        <a href="#" onclick="openProject('lettonne');return false">Lettonne FW26</a>
+        <a href="#" onclick="openProject('meg-donnelly');return false">Meg Donnelly for Groovevolt</a>
+        <a href="#" onclick="openProject('corbyn-besson');return false">Corbyn Besson for Groovevolt</a>
+        <a href="#" onclick="openProject('natalie-jane');return false">Natalie Jane for Groovevolt</a>
+        <a href="#" onclick="openProject('dariel-amant');return false">Dariel Amant for Groovevolt</a>
+        <a href="#" onclick="openProject('rachel-grae');return false">Rachel Grae for Groovevolt</a>
+        <a href="#" onclick="openProject('azzah-sultan');return false">Azzah Sultan for trotter&amp;sholer</a>
+        <a href="#" onclick="openProject('zinnat-ferdous');return false">Zinnat Ferdous, Boxer</a>
+        <a href="#" onclick="openProject('alice-austen');return false">The Alice Austen House</a>
+        <a href="#" onclick="openProject('the-bridge');return false">The Bridge by iCapital</a>
+        <a href="#" onclick="openProject('selfmade');return false">Selfmade Skincare</a>
+        <a href="#" onclick="openProject('w-hotel');return false">W Union Square for UFO Global</a>
+        <a href="#" onclick="openProject('tyvy');return false">TYVY NYC</a>
+        <a href="#" onclick="openProject('sibling-rivalry');return false">Sibling Rivalry for Signed Mgmt.</a>
+        <a href="#" onclick="openProject('ben-talmi');return false">Ben Talmi for Greylock Records</a>
+        <a href="#" onclick="openProject('sportish');return false">Sportish CEO Lily Shimbashi</a>
+        <a href="#" onclick="openProject('cult');return false">Cult of Individuality F/W 2024</a>
+        <a href="#" onclick="openProject('lingotto');return false">Lingotto for Business Insider</a>
+        <a href="#" onclick="openProject('formidable');return false">Formidable</a>
+      </div>
+    </li>
+
+    <li class="nav-drop">
+      <a href="#">stories</a>
+      <div class="drop-panel">
+        <a href="#" onclick="openProject('last-of-chinatown');return false">Last of Chinatown</a>
+        <a href="#" onclick="openProject('way-we-dress');return false">The Way We Dress When We Are Ourselves</a>
+        <a href="#" onclick="openProject('what-the-fields-wore');return false">What the Fields Wore</a>
+        <a href="#" onclick="openProject('companions');return false">Companions</a>
+        <a href="#" onclick="openProject('claire');return false">claire</a>
+        <a href="#" onclick="openProject('singles-personal');return false">Singles</a>
+      </div>
+    </li>
+
+    <li class="nav-drop">
+      <a href="#">documentary</a>
+      <div class="drop-panel">
+        <a href="#" onclick="openProject('la-ice-raids');return false">Los Angeles ICE Raids 2025</a>
+        <a href="#" onclick="openProject('zohran');return false">Zohran Mamdani Election Coverage</a>
+        <a href="#" onclick="openProject('st-james');return false">St. James Place Annual Block Party</a>
+        <a href="#" onclick="openProject('no-kings');return false">No Kings Day for DocumentedNY</a>
+        <a href="#" onclick="openProject('federal-plaza');return false">26 Federal Plaza Arrests for DocumentedNY</a>
+        <a href="#" onclick="openProject('taraweeh');return false">Taraweeh in Times Square</a>
+      </div>
+    </li>
+
+    <li><a href="#" onclick="goPage('motion');return false">motion</a></li>
+    <li><a href="https://www.instagram.com/taurathossain/" target="_blank">instagram</a></li>
+    <li><a href="#" onclick="goPage('bio');return false">bio</a></li>
+    <li><a href="#" onclick="goPage('contact');return false">contact</a></li>
+  </ul>
+
+  <button class="nav-ham" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div id="mobile-nav">
+  <button class="mn-close" onclick="toggleMobile()">✕</button>
+
+  <div class="mn-row"><a href="#" onclick="goPage('overview');toggleMobile();return false">overview</a></div>
+
+  <div class="mn-row">
+    <a href="#">fashion &amp; culture</a>
+    <div class="mn-sub">
+      <a href="#" onclick="openProject('cosmopolitan-me');toggleMobile();return false">Cosmopolitan Middle East</a>
+      <a href="#" onclick="openProject('gloria-steinem');toggleMobile();return false">Gloria Steinem for Cosmopolitan</a>
+      <a href="#" onclick="openProject('connie-chung');toggleMobile();return false">Connie Chung &amp; Maury Povich — Washington Post</a>
+      <a href="#" onclick="openProject('leblanc');toggleMobile();return false">LeBlanc Studios FW26</a>
+      <a href="#" onclick="openProject('meg-donnelly');toggleMobile();return false">Meg Donnelly for Groovevolt</a>
+      <a href="#" onclick="openProject('selfmade');toggleMobile();return false">Selfmade Skincare</a>
+    </div>
+  </div>
+
+  <div class="mn-row">
+    <a href="#">stories</a>
+    <div class="mn-sub">
+      <a href="#" onclick="openProject('last-of-chinatown');toggleMobile();return false">Last of Chinatown</a>
+      <a href="#" onclick="openProject('way-we-dress');toggleMobile();return false">The Way We Dress When We Are Ourselves</a>
+      <a href="#" onclick="openProject('what-the-fields-wore');toggleMobile();return false">What the Fields Wore</a>
+    </div>
+  </div>
+
+  <div class="mn-row">
+    <a href="#">documentary</a>
+    <div class="mn-sub">
+      <a href="#" onclick="openProject('la-ice-raids');toggleMobile();return false">Los Angeles ICE Raids 2025</a>
+      <a href="#" onclick="openProject('zohran');toggleMobile();return false">Zohran Mamdani Election Coverage</a>
+    </div>
+  </div>
+
+  <div class="mn-row"><a href="#" onclick="goPage('motion');toggleMobile();return false">motion</a></div>
+  <div class="mn-row"><a href="https://www.instagram.com/taurathossain/" target="_blank" onclick="toggleMobile()">instagram</a></div>
+  <div class="mn-row"><a href="#" onclick="goPage('bio');toggleMobile();return false">bio</a></div>
+  <div class="mn-row"><a href="#" onclick="goPage('contact');toggleMobile();return false">contact</a></div>
+</div>
+
+<!-- ── OVERVIEW ──────────────────────────────────────── -->
+<div class="page active" id="page-overview">
+  <div class="grid" id="overview-grid"></div>
+  <footer><span>© 2026 Taurat Hossain</span><span>New York City</span></footer>
+</div>
+
+<!-- ── MOTION ───────────────────────────────────────── -->
+<div class="page" id="page-motion">
+  <div class="motion-grid" id="motion-grid"></div>
+  <footer><span>© 2026 Taurat Hossain</span><span>New York City</span></footer>
+</div>
+
+<!-- ── BIO ──────────────────────────────────────────── -->
+<div class="page" id="page-bio">
+  <div class="bio-wrap">
+    <div>
+      <!-- Replace with: <img src="photos/taurat-hossain-bio.jpg" alt="Taurat Hossain"> -->
+      <div class="bio-photo"></div>
+    </div>
+    <div class="bio-copy">
+      <h1>Taurat Hossain</h1>
+      <p>
+        Taurat Hossain (he/him) is a New York&ndash;based photographer working across fashion, editorial, and documentary.
+      </p>
+      <p>
+        His work moves between campaign imagery for global brands, fashion productions, portraits of cultural figures, and long-form documentary stories that follow people and places over time. He shoots across film and digital, bringing a cinematic approach to both commissioned and personal work.
+      </p>
+      <p>
+        Work has appeared in <em>The New York Times, The Washington Post, Bloomberg, Architectural Digest, Cosmopolitan</em> (USA and Middle East), <em>The Atlantic, Harper&rsquo;s Bazaar Arabia, L&rsquo;Officiel Australia, Vox,</em> and <em>Insider.</em>
+      </p>
+      <p>
+        His commercial clients include L&rsquo;Or&eacute;al, K&eacute;rastase, New Balance, Von Dutch, and iCapital. He has been commissioned by Bloomberg Originals for its television program <em>Bullish</em> and by iCapital for key art for <em>The Bridge</em>.
+      </p>
+      <p>
+        His personal work is rooted in New York City. <em>The Way We Dress When We Are Ourselves</em> is an ongoing fashion series made with residents of Jackson Heights, Queens. <em>Last of Chinatown</em> is a long-form documentary project about the aging figures of Manhattan&rsquo;s Chinatown underworld.
+      </p>
+      <div class="bio-awards">
+        <p><em>The Washington Post</em> recognized his work among its <strong>Best Style Photos of 2024</strong>.</p>
+        <p>In 2025, his documentary coverage of the Los Angeles ICE raids was selected as a <strong>finalist for Photo of the Year at the Istanbul Photo Awards</strong>.</p>
+      </div>
+      <div class="bio-contact">
+        <a href="mailto:tauratphotos@gmail.com">tauratphotos@gmail.com</a>
+        <a href="tel:+13236200677">323-620-0677</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTACT ───────────────────────────────────────── -->
+<div class="page" id="page-contact">
+  <div class="contact-wrap">
+    <h1>contact</h1>
+    <p>Taurat works with publications, brands, and cultural institutions on editorial, commercial, and portrait commissions. Based in New York City. Available for travel worldwide.</p>
+    <div class="contact-direct">
+      <a href="mailto:tauratphotos@gmail.com">tauratphotos@gmail.com</a>
+      <a href="tel:+13236200677">323-620-0677</a>
+    </div>
+    <div class="c-divider"></div>
+    <div class="cf"><label>name</label><input type="text" placeholder="Your name"></div>
+    <div class="cf"><label>email</label><input type="email" placeholder="your@email.com"></div>
+    <div class="cf"><label>subject</label><input type="text" placeholder="Editorial · Commercial · Documentary"></div>
+    <div class="cf"><label>message</label><textarea placeholder="Tell me about your project"></textarea></div>
+    <button class="c-submit" onclick="submitContact(event)">send</button>
+    <p class="c-sent" id="c-sent">Received &mdash; I&rsquo;ll be in touch soon.</p>
+  </div>
+</div>
+
+<!-- ── PROJECT PANEL ──────────────────────────────────── -->
+<div id="panel">
+  <div class="panel-nav">
+    <span class="panel-title" id="panel-title"></span>
+    <div class="panel-controls">
+      <button class="panel-prev" id="panel-prev" onclick="panelNav(-1)">← prev</button>
+      <button class="panel-next" id="panel-next" onclick="panelNav(1)">next →</button>
+      <button class="panel-close" onclick="closePanel()">close ×</button>
+    </div>
+  </div>
+  <div class="panel-desc" id="panel-desc"></div>
+  <div class="panel-gallery" id="panel-gallery"></div>
+  <div class="panel-credits" id="panel-credits"></div>
+</div>
+
+</div><!-- /site -->
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   GALLERY DATA
+   Add your real photo filenames to each project's photos[].
+   Add copy and credits to each project entry.
+   All photos should be in a /photos/ folder.
+══════════════════════════════════════════════════════════ */
+const G = {
+
+  /* ── FASHION & CULTURE ──────────────────────────────── */
+  'cosmopolitan-me': {
+    title: 'Cosmopolitan Middle East',
+    desc: 'Colour Me Nostalgia — fashion editorial for Cosmopolitan Middle East.',
+    credits: { 'Publication': 'Cosmopolitan Middle East', 'Photographer': 'Taurat Hossain' },
+    photos: ['cosmopolitan-me-01-taurat-hossain.jpg','cosmopolitan-me-02-taurat-hossain.jpg','cosmopolitan-me-03-taurat-hossain.jpg','cosmopolitan-me-04-taurat-hossain.jpg','cosmopolitan-me-05-taurat-hossain.jpg']
+  },
+  'gloria-steinem': {
+    title: 'Gloria Steinem for Cosmopolitan',
+    desc: 'Portrait of Gloria Steinem and Synclaire Warren, photographed for Cosmopolitan.',
+    credits: { 'Publication': 'Cosmopolitan', 'Photographer': 'Taurat Hossain' },
+    photos: ['gloria-steinem-cosmopolitan-01-taurat-hossain.jpg','gloria-steinem-cosmopolitan-02-taurat-hossain.jpg','gloria-steinem-cosmopolitan-03-taurat-hossain.jpg']
+  },
+  'connie-chung': {
+    title: 'Connie Chung & Maury Povich — The Washington Post',
+    desc: 'Editorial portrait photography for The Washington Post Styles.',
+    credits: { 'Publication': 'The Washington Post', 'Photographer': 'Taurat Hossain' },
+    photos: ['connie-chung-washington-post-01-taurat-hossain.jpg','connie-chung-washington-post-02-taurat-hossain.jpg','connie-chung-washington-post-03-taurat-hossain.jpg','connie-chung-washington-post-04-taurat-hossain.jpg']
+  },
+  'lara-trump': {
+    title: 'Lara Trump for The Washington Post',
+    desc: 'Editorial portrait for The Washington Post.',
+    credits: { 'Publication': 'The Washington Post', 'Photographer': 'Taurat Hossain' },
+    photos: ['lara-trump-washington-post-01-taurat-hossain.jpg','lara-trump-washington-post-02-taurat-hossain.jpg']
+  },
+  'leblanc': {
+    title: 'LeBlanc Studios FW26',
+    desc: 'Fall/Winter 2026 fashion campaign for LeBlanc Studios, New York City.',
+    credits: { 'Client': 'LeBlanc Studios', 'Photographer': 'Taurat Hossain', 'Season': 'Fall/Winter 2026' },
+    photos: ['leblanc-fw26-01-taurat-hossain.jpg','leblanc-fw26-02-taurat-hossain.jpg','leblanc-fw26-03-taurat-hossain.jpg','leblanc-fw26-04-taurat-hossain.jpg','leblanc-fw26-05-taurat-hossain.jpg','leblanc-fw26-06-taurat-hossain.jpg']
+  },
+  'lettonne': {
+    title: 'Lettonne FW26',
+    desc: 'Fall/Winter 2026 campaign for Lettonne.',
+    credits: { 'Client': 'Lettonne', 'Photographer': 'Taurat Hossain', 'Season': 'Fall/Winter 2026' },
+    photos: ['lettonne-fw26-01-taurat-hossain.jpg','lettonne-fw26-02-taurat-hossain.jpg','lettonne-fw26-03-taurat-hossain.jpg','lettonne-fw26-04-taurat-hossain.jpg']
+  },
+  'meg-donnelly': {
+    title: 'Meg Donnelly for Groovevolt',
+    desc: 'Cover feature photography for Groovevolt Magazine.',
+    credits: { 'Publication': 'Groovevolt Magazine', 'Photographer': 'Taurat Hossain' },
+    photos: ['meg-donnelly-groovevolt-01-taurat-hossain.jpg','meg-donnelly-groovevolt-02-taurat-hossain.jpg','meg-donnelly-groovevolt-03-taurat-hossain.jpg','meg-donnelly-groovevolt-04-taurat-hossain.jpg']
+  },
+  'corbyn-besson': {
+    title: 'Corbyn Besson for Groovevolt',
+    desc: 'Groovevolt Magazine Issue 02.',
+    credits: { 'Publication': 'Groovevolt Magazine Issue 02', 'Photographer': 'Taurat Hossain' },
+    photos: ['corbyn-besson-groovevolt-01-taurat-hossain.jpg','corbyn-besson-groovevolt-02-taurat-hossain.jpg','corbyn-besson-groovevolt-03-taurat-hossain.jpg']
+  },
+  'natalie-jane': {
+    title: 'Natalie Jane for Groovevolt',
+    desc: 'December 2025 cover feature for Groovevolt Magazine.',
+    credits: { 'Publication': 'Groovevolt Magazine', 'Issue': 'December 2025', 'Photographer': 'Taurat Hossain' },
+    photos: ['natalie-jane-groovevolt-01-taurat-hossain.jpg','natalie-jane-groovevolt-02-taurat-hossain.jpg','natalie-jane-groovevolt-03-taurat-hossain.jpg']
+  },
+  'dariel-amant': {
+    title: 'Dariel Amant for Groovevolt',
+    desc: 'Groovevolt Magazine Issue 02.',
+    credits: { 'Publication': 'Groovevolt Magazine Issue 02', 'Photographer': 'Taurat Hossain' },
+    photos: ['dariel-amant-groovevolt-01-taurat-hossain.jpg','dariel-amant-groovevolt-02-taurat-hossain.jpg','dariel-amant-groovevolt-03-taurat-hossain.jpg']
+  },
+  'rachel-grae': {
+    title: 'Rachel Grae for Groovevolt',
+    desc: 'Groovevolt Magazine.',
+    credits: { 'Publication': 'Groovevolt Magazine', 'Photographer': 'Taurat Hossain' },
+    photos: ['rachel-grae-groovevolt-01-taurat-hossain.jpg','rachel-grae-groovevolt-02-taurat-hossain.jpg']
+  },
+  'azzah-sultan': {
+    title: 'Azzah Sultan for trotter&sholer',
+    desc: 'Portrait of artist Azzah Sultan, represented by Trotter & Sholer gallery, New York.',
+    credits: { 'Subject': 'Azzah Sultan', 'Gallery': 'Trotter & Sholer', 'Photographer': 'Taurat Hossain' },
+    photos: ['azzah-sultan-trottersholer-01-taurat-hossain.jpg','azzah-sultan-trottersholer-02-taurat-hossain.jpg','azzah-sultan-trottersholer-03-taurat-hossain.jpg','azzah-sultan-trottersholer-04-taurat-hossain.jpg']
+  },
+  'zinnat-ferdous': {
+    title: 'Zinnat Ferdous, Boxer',
+    desc: 'Portrait series of Bangladeshi-American boxer Zinnat Ferdous, photographed in Brooklyn, New York.',
+    credits: { 'Subject': 'Zinnat Ferdous', 'Location': 'Brooklyn, New York', 'Photographer': 'Taurat Hossain' },
+    photos: ['zinnat-ferdous-boxer-01-taurat-hossain.jpg','zinnat-ferdous-boxer-02-taurat-hossain.jpg','zinnat-ferdous-boxer-03-taurat-hossain.jpg','zinnat-ferdous-boxer-04-taurat-hossain.jpg','zinnat-ferdous-boxer-05-taurat-hossain.jpg']
+  },
+  'alice-austen': {
+    title: 'The Alice Austen House',
+    desc: 'Cultural institution portrait work for The Alice Austen House, Staten Island.',
+    credits: { 'Client': 'The Alice Austen House', 'Photographer': 'Taurat Hossain' },
+    photos: ['alice-austen-house-01-taurat-hossain.jpg','alice-austen-house-02-taurat-hossain.jpg','alice-austen-house-03-taurat-hossain.jpg']
+  },
+  'the-bridge': {
+    title: 'The Bridge by iCapital',
+    desc: 'Key art photography for The Bridge, an iCapital original. Featuring Sonali Basak at the Brooklyn Bridge.',
+    credits: { 'Client': 'iCapital', 'Production': 'The Bridge', 'Photographer': 'Taurat Hossain' },
+    photos: ['the-bridge-icapital-01-taurat-hossain.jpg','the-bridge-icapital-02-taurat-hossain.jpg','the-bridge-icapital-03-taurat-hossain.jpg']
+  },
+  'selfmade': {
+    title: 'Selfmade Skincare',
+    desc: 'Beauty campaign photography and creative direction for Selfmade Skincare, New York City, 2025.',
+    credits: {
+      'Photographer, Producer & Creative Director': 'Taurat Hossain',
+      'Prop Styling': 'Adam DiCarlo',
+      'Lighting': 'Abby Curtis',
+      'Video': 'Andrew Ye',
+      'Executive Producer': 'Taylor Basil',
+      'Talent': 'Aliyah, Aaron, Nasri, Hailey, Nikki'
+    },
+    photos: ['selfmade-skincare-lifestyle-campaign-01-taurat-hossain.jpg','selfmade-skincare-lifestyle-campaign-02-taurat-hossain.jpg','selfmade-skincare-product-still-life-01-taurat-hossain.jpg','selfmade-skincare-lifestyle-campaign-03-taurat-hossain.jpg','selfmade-skincare-product-still-life-02-taurat-hossain.jpg','selfmade-skincare-group-campaign-01-taurat-hossain.jpg','selfmade-skincare-beauty-portrait-01-taurat-hossain.jpg','selfmade-skincare-lifestyle-campaign-04-taurat-hossain.jpg']
+  },
+  'w-hotel': {
+    title: 'W Union Square for UFO Global',
+    desc: 'Lifestyle photography at W Hotel Union Square, New York City.',
+    credits: { 'Client': 'UFO Global', 'Location': 'W Hotel Union Square, NYC', 'Photographer': 'Taurat Hossain' },
+    photos: ['w-hotel-union-square-lifestyle-01-taurat-hossain.jpg','w-hotel-union-square-lifestyle-02-taurat-hossain.jpg','w-hotel-union-square-lifestyle-03-taurat-hossain.jpg']
+  },
+  'tyvy': {
+    title: 'TYVY NYC',
+    desc: 'Brand launch campaign for TYVY NYC, Bushwick Brooklyn. Shot on Hasselblad X2D.',
+    credits: { 'Client': 'TYVY NYC', 'Location': 'Bushwick, Brooklyn', 'Photographer': 'Taurat Hossain', 'Camera': 'Hasselblad X2D' },
+    photos: ['tyvy-nyc-brand-launch-01-taurat-hossain.jpg','tyvy-nyc-brand-launch-02-taurat-hossain.jpg','tyvy-nyc-brand-launch-03-taurat-hossain.jpg','tyvy-nyc-brand-launch-04-taurat-hossain.jpg']
+  },
+  'sibling-rivalry': {
+    title: 'Sibling Rivalry for Signed Mgmt.',
+    desc: 'Portrait shoot for Signed Management.',
+    credits: { 'Client': 'Signed Mgmt.', 'Photographer': 'Taurat Hossain' },
+    photos: ['sibling-rivalry-signed-mgmt-01-taurat-hossain.jpg','sibling-rivalry-signed-mgmt-02-taurat-hossain.jpg','sibling-rivalry-signed-mgmt-03-taurat-hossain.jpg']
+  },
+  'ben-talmi': {
+    title: 'Ben Talmi for Greylock Records',
+    desc: 'Music portrait for Greylock Records.',
+    credits: { 'Client': 'Greylock Records', 'Photographer': 'Taurat Hossain' },
+    photos: ['ben-talmi-greylock-records-01-taurat-hossain.jpg','ben-talmi-greylock-records-02-taurat-hossain.jpg']
+  },
+  'sportish': {
+    title: 'Sportish CEO Lily Shimbashi',
+    desc: 'Executive portrait for Deseret News.',
+    credits: { 'Publication': 'Deseret News', 'Photographer': 'Taurat Hossain' },
+    photos: ['sportish-lily-shimbashi-deseret-news-01-taurat-hossain.jpg','sportish-lily-shimbashi-deseret-news-02-taurat-hossain.jpg']
+  },
+  'cult': {
+    title: 'Cult of Individuality F/W 2024',
+    desc: 'Fashion campaign for Cult of Individuality Fall/Winter 2024.',
+    credits: { 'Client': 'Cult of Individuality', 'Season': 'Fall/Winter 2024', 'Photographer': 'Taurat Hossain' },
+    photos: ['cult-of-individuality-fw24-01-taurat-hossain.jpg','cult-of-individuality-fw24-02-taurat-hossain.jpg','cult-of-individuality-fw24-03-taurat-hossain.jpg','cult-of-individuality-fw24-04-taurat-hossain.jpg']
+  },
+  'lingotto': {
+    title: 'Lingotto for Business Insider',
+    desc: 'Feature photography for Business Insider.',
+    credits: { 'Publication': 'Business Insider', 'Photographer': 'Taurat Hossain' },
+    photos: ['lingotto-business-insider-01-taurat-hossain.jpg','lingotto-business-insider-02-taurat-hossain.jpg','lingotto-business-insider-03-taurat-hossain.jpg']
+  },
+  'formidable': {
+    title: 'Formidable',
+    desc: '',
+    credits: { 'Photographer': 'Taurat Hossain' },
+    photos: ['formidable-01-taurat-hossain.jpg','formidable-02-taurat-hossain.jpg','formidable-03-taurat-hossain.jpg']
+  },
+
+  /* ── STORIES ────────────────────────────────────────── */
+  'last-of-chinatown': {
+    title: 'Last of Chinatown',
+    desc: 'For the past year, I have been photographing the last living figures of Manhattan Chinatown\'s most violent era — the gangsters who ran it and the cops who spent careers trying to take them down. Previously at odds. Now old men, sitting across from my camera for the first time, in a neighborhood that has gentrified entirely around them. This is the story of what comes after.\n\nIncludes: photo, audio, Super 8mm video, written essay. Available for publication and exhibition.',
+    credits: {
+      'Photographer, Producer & Writer': 'Taurat Hossain',
+      'Format': 'Medium format digital, Super 8mm film',
+      'Status': 'In production'
+    },
+    photos: ['last-of-chinatown-peter-chin-ghost-shadows-taurat-hossain.jpg','last-of-chinatown-mike-moy-fuk-ching-taurat-hossain.jpg','last-of-chinatown-cb-cowboy-flying-dragons-taurat-hossain.jpg','last-of-chinatown-richie-ng-ghost-shadows-taurat-hossain.jpg','last-of-chinatown-jimmy-tsui-big-head-tung-on-taurat-hossain.jpg']
+  },
+  'way-we-dress': {
+    title: 'The Way We Dress When We Are Ourselves',
+    desc: 'An ongoing fashion series photographing residents of Jackson Heights, New York — one of the most ethnically diverse neighborhoods in the world.\n\nThe people here are already fashion subjects. Each image is made with the same intention as any editorial shoot — the lighting, the framing, the attention — except the subjects are chosen from the street, from the neighborhood, from real life.\n\nCurrently casting: Stylist and Producer.',
+    credits: {
+      'Photographer': 'Taurat Hossain',
+      'Location': 'Jackson Heights, Queens, New York',
+      'Format': 'Film and digital',
+      'Status': 'Ongoing'
+    },
+    photos: ['the-way-we-dress-jackson-heights-01-taurat-hossain.jpg','the-way-we-dress-jackson-heights-02-taurat-hossain.jpg','the-way-we-dress-jackson-heights-03-taurat-hossain.jpg','the-way-we-dress-jackson-heights-04-taurat-hossain.jpg','the-way-we-dress-jackson-heights-05-taurat-hossain.jpg','the-way-we-dress-jackson-heights-06-taurat-hossain.jpg']
+  },
+  'what-the-fields-wore': {
+    title: 'What the Fields Wore',
+    desc: 'An independently produced fashion editorial — 13 looks, shot across two days in the pastoral landscapes of the Hudson Valley. Published in Ladygunn Magazine, September 2026.',
+    credits: {
+      'Photographer & Creative Director': 'Taurat Hossain',
+      'Stylist': 'Chelsea Volpe',
+      'Models': 'Izzy Wild, Brydie',
+      'Hair': 'Tashi Ashizawa',
+      'Makeup': 'Takumi Inoue',
+      'Art Direction & Video': 'Jeremy Smetana',
+      'Casting': 'Eric Cano',
+      'Location': 'South Cairo, New York',
+      'Format': 'Canon R5, Hasselblad X2D, Hasselblad H1 film',
+      'Published': 'Ladygunn Magazine, September 2026'
+    },
+    photos: ['what-the-fields-wore-hudson-valley-01-taurat-hossain.jpg','what-the-fields-wore-hudson-valley-02-taurat-hossain.jpg','what-the-fields-wore-hudson-valley-03-taurat-hossain.jpg','what-the-fields-wore-hudson-valley-04-taurat-hossain.jpg','what-the-fields-wore-hudson-valley-05-taurat-hossain.jpg','what-the-fields-wore-hudson-valley-06-taurat-hossain.jpg','what-the-fields-wore-hudson-valley-07-taurat-hossain.jpg','what-the-fields-wore-hudson-valley-08-taurat-hossain.jpg']
+  },
+  'companions': {
+    title: 'Companions',
+    desc: 'An ongoing portrait series of New Yorkers and their pets, photographed in their homes.',
+    credits: { 'Photographer': 'Taurat Hossain', 'Location': 'New York City', 'Status': 'Ongoing' },
+    photos: ['companions-nyc-portrait-01-taurat-hossain.jpg','companions-nyc-portrait-02-taurat-hossain.jpg','companions-nyc-portrait-03-taurat-hossain.jpg']
+  },
+  'claire': {
+    title: 'claire',
+    desc: '',
+    credits: { 'Photographer': 'Taurat Hossain' },
+    photos: ['claire-portrait-01-taurat-hossain.jpg','claire-portrait-02-taurat-hossain.jpg','claire-portrait-03-taurat-hossain.jpg']
+  },
+  'singles-personal': {
+    title: 'Singles',
+    desc: 'Single-frame personal photographs made across New York City — Rockaway Beach, Chinatown, Jackson Heights, Fort Tilden, McCarren Park, Astoria.',
+    credits: { 'Photographer': 'Taurat Hossain', 'Location': 'New York City' },
+    photos: ['singles-personal-nyc-01-taurat-hossain.jpg','singles-personal-nyc-02-taurat-hossain.jpg','singles-personal-nyc-03-taurat-hossain.jpg','singles-personal-nyc-04-taurat-hossain.jpg','singles-personal-nyc-05-taurat-hossain.jpg']
+  },
+
+  /* ── DOCUMENTARY ────────────────────────────────────── */
+  'la-ice-raids': {
+    title: 'Los Angeles ICE Raids 2025',
+    desc: 'Documentary coverage of ICE raids and community resistance in Los Angeles, June 2025. Selected as a finalist for Photo of the Year at the Istanbul Photo Awards, 2025.',
+    credits: { 'Photographer': 'Taurat Hossain', 'Location': 'Los Angeles, California', 'Date': 'June 2025', 'Recognition': 'Istanbul Photo Awards — Photo of the Year Finalist 2025' },
+    photos: ['la-ice-raids-documentary-2025-01-taurat-hossain.jpg','la-ice-raids-documentary-2025-02-taurat-hossain.jpg','la-ice-raids-documentary-2025-03-taurat-hossain.jpg','la-ice-raids-documentary-2025-04-taurat-hossain.jpg','la-ice-raids-documentary-2025-05-taurat-hossain.jpg']
+  },
+  'zohran': {
+    title: 'Zohran Mamdani Election Coverage',
+    desc: 'Campaign photography and documentary coverage of Zohran Mamdani\'s NYC mayoral campaign.',
+    credits: { 'Photographer': 'Taurat Hossain', 'Location': 'New York City' },
+    photos: ['zohran-mamdani-election-coverage-01-taurat-hossain.jpg','zohran-mamdani-election-coverage-02-taurat-hossain.jpg','zohran-mamdani-election-coverage-03-taurat-hossain.jpg','zohran-mamdani-election-coverage-04-taurat-hossain.jpg']
+  },
+  'st-james': {
+    title: 'St. James Place Annual Block Party',
+    desc: 'Documentary coverage of the St. James Place Annual Block Party, Brooklyn.',
+    credits: { 'Photographer': 'Taurat Hossain', 'Location': 'Brooklyn, New York' },
+    photos: ['st-james-place-block-party-01-taurat-hossain.jpg','st-james-place-block-party-02-taurat-hossain.jpg','st-james-place-block-party-03-taurat-hossain.jpg']
+  },
+  'no-kings': {
+    title: 'No Kings Day for DocumentedNY',
+    desc: 'Documentary coverage for Documented NY.',
+    credits: { 'Publication': 'DocumentedNY', 'Photographer': 'Taurat Hossain', 'Date': 'October 2025' },
+    photos: ['no-kings-day-documented-ny-01-taurat-hossain.jpg','no-kings-day-documented-ny-02-taurat-hossain.jpg','no-kings-day-documented-ny-03-taurat-hossain.jpg']
+  },
+  'federal-plaza': {
+    title: '26 Federal Plaza Arrests for DocumentedNY',
+    desc: 'Documentary coverage of arrests at 26 Federal Plaza for Documented NY.',
+    credits: { 'Publication': 'DocumentedNY', 'Photographer': 'Taurat Hossain', 'Location': '26 Federal Plaza, New York City' },
+    photos: ['26-federal-plaza-arrests-documented-ny-01-taurat-hossain.jpg','26-federal-plaza-arrests-documented-ny-02-taurat-hossain.jpg','26-federal-plaza-arrests-documented-ny-03-taurat-hossain.jpg']
+  },
+
+  'taraweeh': {
+    title: 'Taraweeh in Times Square',
+    desc: 'Documentary coverage of Taraweeh prayers in Times Square, New York City.',
+    credits: { 'Photographer': 'Taurat Hossain', 'Location': 'Times Square, New York City' },
+    photos: ['taraweeh-times-square-nyc-01-taurat-hossain.jpg','taraweeh-times-square-nyc-02-taurat-hossain.jpg','taraweeh-times-square-nyc-03-taurat-hossain.jpg','taraweeh-times-square-nyc-04-taurat-hossain.jpg']
+  }
+};
+
+/* ══════════════════════════════════════════════════════════
+   OVERVIEW ORDER
+   Controls which projects appear on the homepage and in what
+   sequence. To remove a project from the homepage, delete
+   its slug from this list — the project stays in the nav.
+   To reorder, cut and paste slugs. To add a new project,
+   add its slug here AND add a full entry to const G above.
+══════════════════════════════════════════════════════════ */
+const OVERVIEW = [
+  'cosmopolitan-me',
+  'la-ice-raids',
+  'leblanc',
+  'connie-chung',
+  'what-the-fields-wore',
+  'lettonne',
+  'gloria-steinem',
+  'way-we-dress',
+  'meg-donnelly',
+  'selfmade',
+  'zinnat-ferdous',
+  'last-of-chinatown',
+  'the-bridge',
+  'corbyn-besson',
+  'taraweeh',
+  'tyvy',
+  'azzah-sultan',
+  'zohran',
+  'natalie-jane',
+  'alice-austen',
+  'w-hotel',
+  'dariel-amant',
+  'sibling-rivalry'
+];
+
+/* ── OVERVIEW GRID BUILD ─────────────────────────────── */
+const heights = [340,280,400,260,370,300,440,250,380,320,460,270,350,290,420,260,310,390,240,360,300,430,280];
+
+function buildOverview() {
+  const el = document.getElementById('overview-grid');
+  OVERVIEW.forEach((slug, i) => {
+    const proj = G[slug];
+    if (!proj) return;
+    const div = document.createElement('div');
+    div.className = 'gi';
+    div.onclick = () => openProject(slug);
+    const h = heights[i % heights.length];
+    div.innerHTML = `
+      <img
+        src="${proj.photos[0]}"
+        alt="${proj.title} — Taurat Hossain"
+        loading="lazy"
+        style="height:${h}px;object-fit:cover;"
+        onerror="this.closest('.gi').style.height='${h}px';this.style.display='none';">
+      <div class="gi-cap">
+        <span class="gi-cap-title">${proj.title}</span>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+
+/* ── MOTION GRID BUILD ───────────────────────────────── */
+const MOTION_CLIPS = [
+  { label: 'reel 01', dur: '0:42', src: 'motion-reel-01-taurat-hossain.mp4' },
+  { label: 'reel 02', dur: '0:38', src: 'motion-reel-02-taurat-hossain.mp4' },
+  { label: 'bts', dur: '0:55', src: 'motion-bts-taurat-hossain.mp4' },
+  { label: 'street 01', dur: '0:29', src: 'motion-street-01-taurat-hossain.mp4' },
+  { label: 'campaign cut', dur: '0:47', src: 'motion-campaign-cut-taurat-hossain.mp4' },
+  { label: 'personal 01', dur: '0:33', src: 'motion-personal-01-taurat-hossain.mp4' },
+  { label: 'reel 03', dur: '0:51', src: 'motion-reel-03-taurat-hossain.mp4' },
+  { label: 'super 8', dur: '0:44', src: 'motion-super8-taurat-hossain.mp4' }
+];
+
+function buildMotion() {
+  const el = document.getElementById('motion-grid');
+  MOTION_CLIPS.forEach(clip => {
+    const div = document.createElement('div');
+    div.className = 'motion-item';
+    /* ▼ When you have real video files, replace the .motion-thumb div
+       with: <video src="${clip.src}" muted loop playsinline></video>
+       Then add play-on-hover via JS: div.addEventListener('mouseenter',()=>vid.play())
+    */
+    div.innerHTML = `
+      <div class="motion-thumb">
+        <div class="motion-play">
+          <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+            <path d="M1 1L11 7L1 13V1Z" fill="rgba(247,245,242,.7)"/>
+          </svg>
+        </div>
+        <span class="motion-label">${clip.label}</span>
+      </div>
+      <span class="motion-dur">${clip.dur}</span>`;
+    el.appendChild(div);
+  });
+}
+
+/* ── PROJECT PANEL ───────────────────────────────────── */
+let currentSlug = null;
+let currentOverviewIndex = -1;
+
+function openProject(slug) {
+  const proj = G[slug];
+  if (!proj) return;
+
+  currentSlug = slug;
+  currentOverviewIndex = OVERVIEW.indexOf(slug);
+
+  /* Update browser tab title */
+  document.title = proj.title + ' — Taurat Hossain';
+
+  /* Title */
+  document.getElementById('panel-title').textContent = proj.title;
+
+  /* Description */
+  const descEl = document.getElementById('panel-desc');
+  if (proj.desc) {
+    descEl.style.display = '';
+    descEl.innerHTML = proj.desc.split('\n\n').map(p => `<p>${p}</p>`).join('');
+  } else {
+    descEl.style.display = 'none';
+  }
+
+  /* Gallery */
+  const gal = document.getElementById('panel-gallery');
+  gal.innerHTML = '';
+  proj.photos.forEach((photo, i) => {
+    const div = document.createElement('div');
+    div.className = 'panel-photo';
+    div.innerHTML = `<img
+      src="${photo}"
+      alt="${proj.title} — photo ${i+1} by Taurat Hossain"
+      loading="${i < 2 ? 'eager' : 'lazy'}"
+      onerror="this.parentElement.style.display='none'">`;
+    gal.appendChild(div);
+  });
+
+  /* Credits */
+  const creds = document.getElementById('panel-credits');
+  creds.innerHTML = '';
+  Object.entries(proj.credits).forEach(([label, val]) => {
+    const div = document.createElement('div');
+    div.className = 'credit-block';
+    div.innerHTML = `<div class="credit-label">${label}</div><div class="credit-value">${val}</div>`;
+    creds.appendChild(div);
+  });
+
+  /* Prev / Next visibility */
+  document.getElementById('panel-prev').style.visibility =
+    currentOverviewIndex > 0 ? 'visible' : 'hidden';
+  document.getElementById('panel-next').style.visibility =
+    currentOverviewIndex < OVERVIEW.length - 1 ? 'visible' : 'hidden';
+
+  /* Open */
+  const panel = document.getElementById('panel');
+  panel.classList.add('open');
+  panel.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closePanel() {
+  document.getElementById('panel').classList.remove('open');
+  document.body.style.overflow = '';
+  document.title = 'Taurat Hossain | NYC Photographer';
+}
+
+function panelNav(dir) {
+  const nextIndex = currentOverviewIndex + dir;
+  if (nextIndex < 0 || nextIndex >= OVERVIEW.length) return;
+  openProject(OVERVIEW[nextIndex]);
+}
+
+/* Close panel on Escape */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePanel();
+});
+
+/* ── PAGE NAVIGATION ─────────────────────────────────── */
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + name);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  closePanel();
+}
+
+function toggleMobile() {
+  document.getElementById('mobile-nav').classList.toggle('open');
+}
+
+/* ── CONTACT FORM ────────────────────────────────────── */
+function submitContact(e) {
+  e.preventDefault();
+  /* Wire to Formspree: replace fetch URL with your Formspree endpoint */
+  document.getElementById('c-sent').style.display = 'block';
+}
+
+/* ══════════════════════════════════════════════════════════
+   INTRO VIDEO SEQUENCE
+   ──────────────────────────────────────────────────────────
+   Set INTRO_CLIPS to your video filenames.
+   Single clip:   const INTRO_CLIPS = ['intro.mp4'];
+   Multi-clip:    const INTRO_CLIPS = ['clip1.mp4','clip2.mp4','clip3.mp4'];
+
+   Each clip plays fully before the next.
+   If files are missing, the dark placeholder shows.
+   The 15-second countdown always runs as a fallback.
+   Visitor can skip at any time.
+══════════════════════════════════════════════════════════ */
+const INTRO_CLIPS = [
+  /* 'intro-clip-01.mp4', */
+  /* 'intro-clip-02.mp4', */
+  /* 'intro-clip-03.mp4', */
+];
+
+let clipIndex = 0;
+let introTimer = null;
+const container = document.getElementById('intro-video-container');
+const countEl   = document.getElementById('intro-count');
+
+function loadClip(index) {
+  if (!INTRO_CLIPS.length || index >= INTRO_CLIPS.length) return;
+
+  /* Remove any previous video */
+  const prev = container.querySelector('video');
+  if (prev) prev.remove();
+
+  const vid = document.createElement('video');
+  vid.src = INTRO_CLIPS[index];
+  vid.muted = true;
+  vid.autoplay = true;
+  vid.playsinline = true;
+  vid.setAttribute('playsinline', '');
+  Object.assign(vid.style, {
+    position: 'absolute', inset: '0',
+    width: '100%', height: '100%',
+    objectFit: 'cover', opacity: '.85',
+    transition: 'opacity .4s'
+  });
+
+  vid.addEventListener('ended', () => {
+    if (clipIndex < INTRO_CLIPS.length - 1) {
+      clipIndex++;
+      loadClip(clipIndex);
+    } else {
+      /* All clips done */
+      clearInterval(introTimer);
+      skipIntro();
+    }
+  });
+
+  vid.addEventListener('error', () => {
+    /* File missing — stay on placeholder, let countdown handle it */
+  });
+
+  container.appendChild(vid);
+}
+
+/* Start first clip if any are defined */
+if (INTRO_CLIPS.length > 0) {
+  loadClip(0);
+}
+
+/* 15-second countdown — always active as fallback */
+let sec = 15;
+introTimer = setInterval(() => {
+  sec--;
+  countEl.textContent = sec;
+  if (sec <= 0) {
+    clearInterval(introTimer);
+    skipIntro();
+  }
+}, 1000);
+
+function skipIntro() {
+  clearInterval(introTimer);
+  document.getElementById('intro').classList.add('gone');
+  setTimeout(() => document.getElementById('site').classList.add('show'), 200);
+}
+
+/* ── INIT ────────────────────────────────────────────── */
+buildOverview();
+buildMotion();
+</script>
+</body>
+</html>
